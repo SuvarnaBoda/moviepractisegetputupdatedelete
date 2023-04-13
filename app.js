@@ -74,4 +74,21 @@ app.delete("/movies/:movieId/", async (request, response) => {
   const deleteresponse = await db.run(deletequery);
   response.send("Movie Removed");
 });
+
+app.get("/directors/", async (request, response) => {
+  const directorquery = `
+        SELECT * FROM director ORDER BY directorId;
+    `;
+  const directorlist = await db.all(directorquery);
+  response.send(directorlist);
+});
+
+app.get("/directors/:directorId/movies/", async (request, response) => {
+  const { directorId } = request.params;
+  const directquery = `
+        SELECT * FROM director WHERE directorId=${directorId};
+    `;
+  const directarray = await db.all(directquery);
+  response.send(directarray);
+});
 module.exports = app;
